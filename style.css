@@ -1,3 +1,37 @@
+/* =========================
+   FONTS
+   Fraunces: a soft, slightly wobbly serif with a hand-cut feel
+   Figtree: a friendly, quiet sans for reading
+========================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,100;1,9..144,400..600,100&display=swap");
+
+
+/* =========================
+   DESIGN TOKENS
+   Palette: river stone at dusk
+========================= */
+
+:root {
+    --night:      #1b2321;   /* page background, deep green-grey */
+    --stone:      #232d2a;   /* cards and raised surfaces */
+    --stone-soft: #2a3531;   /* hover surfaces */
+    --line:       #36443f;   /* quiet borders */
+
+    --text:       #ebe7dc;   /* warm paper white */
+    --muted:      #a5afa6;   /* secondary text */
+    --faint:      #6f7c75;   /* footer, small print */
+
+    --moss:       #a9c59a;   /* main accent */
+    --moss-light: #c4dbb6;
+    --glow:       #d8c58f;   /* tiny warm touch, used rarely */
+
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body:    "Figtree", "Segoe UI", system-ui, sans-serif;
+
+    --ease: cubic-bezier(0.33, 0.1, 0.25, 1);
+}
+
 
 /* =========================
    GENERAL RESET
@@ -14,15 +48,38 @@ html {
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #0b1120;
-    color: #ffffff;
-    line-height: 1.6;
+    font-family: var(--font-body);
+    background-color: var(--night);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* A very faint paper grain so the dark feels like material, not a flat screen */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+}
+
+::selection {
+    background-color: var(--moss);
+    color: var(--night);
 }
 
 a {
     text-decoration: none;
     color: inherit;
+}
+
+a:focus-visible {
+    outline: 2px solid var(--moss);
+    outline-offset: 4px;
+    border-radius: 6px;
 }
 
 ul {
@@ -36,13 +93,12 @@ ul {
 
 .header {
     width: 100%;
-    border-bottom: 1px solid #1e293b;
 }
 
 .navbar {
     max-width: 1200px;
     margin: auto;
-    padding: 22px 30px;
+    padding: 26px 30px;
 
     display: flex;
     align-items: center;
@@ -50,13 +106,15 @@ ul {
 }
 
 .logo {
+    font-family: var(--font-display);
     font-size: 30px;
-    font-weight: bold;
-    letter-spacing: -2px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
 }
 
 .logo span {
-    color: #38bdf8;
+    color: var(--moss);
+    font-style: italic;
 }
 
 .nav-links {
@@ -65,28 +123,43 @@ ul {
 }
 
 .nav-links a {
-    color: #aab5c5;
-    font-size: 14px;
-    transition: 0.3s;
+    position: relative;
+    color: var(--muted);
+    font-size: 15px;
+    padding-bottom: 4px;
+    transition: color 0.4s var(--ease);
+}
+
+/* A small hand-drawn-feeling dot instead of a hard underline */
+.nav-links a.active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--moss);
+    transform: translateX(-50%);
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: #38bdf8;
+    color: var(--moss);
 }
 
 .nav-button {
-    padding: 11px 22px;
-    border: 1px solid #38bdf8;
-    border-radius: 5px;
-    color: #38bdf8;
+    padding: 10px 24px;
+    border: 1px solid var(--moss);
+    border-radius: 999px;
+    color: var(--moss);
     font-size: 14px;
-    transition: 0.3s;
+    transition: background-color 0.4s var(--ease), color 0.4s var(--ease);
 }
 
 .nav-button:hover {
-    background-color: #38bdf8;
-    color: #0b1120;
+    background-color: var(--moss);
+    color: var(--night);
 }
 
 
@@ -97,31 +170,41 @@ ul {
 .primary-button,
 .secondary-button {
     display: inline-block;
-    padding: 13px 24px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    transition: 0.3s;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background-color 0.4s var(--ease),
+                border-color 0.4s var(--ease),
+                color 0.4s var(--ease),
+                transform 0.4s var(--ease);
 }
 
 .primary-button {
-    background-color: #38bdf8;
-    color: #0b1120;
+    background-color: var(--moss);
+    color: var(--night);
 }
 
 .primary-button:hover {
-    background-color: #7dd3fc;
-    transform: translateY(-3px);
+    background-color: var(--moss-light);
+    transform: translateY(-2px);
 }
 
 .secondary-button {
-    border: 1px solid #475569;
-    color: #ffffff;
+    border: 1px solid var(--line);
+    color: var(--text);
 }
 
 .secondary-button:hover {
-    border-color: #38bdf8;
-    color: #38bdf8;
+    border-color: var(--moss);
+    color: var(--moss);
+}
+
+.primary-button:focus-visible,
+.secondary-button:focus-visible,
+.nav-button:focus-visible {
+    outline: 2px solid var(--glow);
+    outline-offset: 4px;
 }
 
 
@@ -145,41 +228,50 @@ ul {
     flex: 1;
 }
 
+/* Sentence case, soft italic: reads like a quiet greeting, not a label */
 .eyebrow {
-    color: #38bdf8;
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
+    color: var(--moss);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 17px;
+    margin-bottom: 18px;
 }
 
 .hero h1 {
     max-width: 650px;
-    font-size: clamp(40px, 5vw, 65px);
-    line-height: 1.12;
-    margin-bottom: 25px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(40px, 5vw, 62px);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    margin-bottom: 26px;
 }
 
+/* The highlighted words get a loose, hand-drawn underline */
 .hero h1 span,
 .contact-section h2 span {
-    color: #38bdf8;
+    color: var(--moss);
+    font-style: italic;
+    padding-bottom: 6px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='8' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1 5 Q13 1 26 4 T51 4 T76 4 T99 3' fill='none' stroke='%23a9c59a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat left bottom / 100% 8px;
 }
 
 .hero-description {
-    max-width: 530px;
-    color: #aab5c5;
-    font-size: 16px;
-    margin-bottom: 35px;
+    max-width: 520px;
+    color: var(--muted);
+    font-size: 17px;
+    margin-bottom: 36px;
 }
 
 .hero-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 14px;
 }
 
 
-/* Hero Visual */
+/* Hero Visual
+   A soft pebble that slowly breathes: the one gentle moving thing on the page */
 
 .hero-visual {
     flex: 1;
@@ -190,34 +282,50 @@ ul {
     justify-content: center;
 
     background:
-        radial-gradient(circle, #164e63 0%, #0b1120 70%);
+        radial-gradient(ellipse at center, rgba(169, 197, 154, 0.16) 0%, rgba(27, 35, 33, 0) 68%);
 }
 
 .visual-card {
     width: 280px;
     height: 280px;
-    border: 1px solid #38bdf8;
-    border-radius: 15px;
+    border: 1px solid var(--line);
+    border-radius: 58% 42% 55% 45% / 47% 56% 44% 53%;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    background: #111c30;
-    box-shadow: 0 0 50px rgba(56, 189, 248, 0.12);
+    background: linear-gradient(160deg, var(--stone-soft), var(--stone));
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(235, 231, 220, 0.06);
+
+    animation: breathe 14s ease-in-out infinite;
+}
+
+@keyframes breathe {
+    0%, 100% {
+        border-radius: 58% 42% 55% 45% / 47% 56% 44% 53%;
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        border-radius: 46% 54% 44% 56% / 55% 45% 56% 44%;
+        transform: scale(1.03) rotate(-1.5deg);
+    }
 }
 
 .visual-number {
-    font-size: 85px;
-    font-weight: bold;
-    color: #38bdf8;
+    font-family: var(--font-display);
+    font-size: 84px;
+    font-weight: 500;
+    color: var(--moss);
+    line-height: 1;
 }
 
 .visual-card p {
-    color: #aab5c5;
-    letter-spacing: 2px;
-    font-size: 12px;
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 8px;
 }
 
 
@@ -233,18 +341,20 @@ ul {
 }
 
 .section-heading {
-    max-width: 650px;
-    margin-bottom: 45px;
+    max-width: 620px;
+    margin-bottom: 48px;
 }
 
 .section-heading h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
     font-size: 36px;
-    line-height: 1.2;
-    margin-bottom: 15px;
+    line-height: 1.25;
+    margin-bottom: 14px;
 }
 
 .section-heading > p:last-child {
-    color: #aab5c5;
+    color: var(--muted);
 }
 
 
@@ -257,9 +367,9 @@ ul {
     align-items: stretch;
     min-height: 320px;
 
-    background-color: #111c30;
-    border: 1px solid #263449;
-    border-radius: 10px;
+    background-color: var(--stone);
+    border: 1px solid var(--line);
+    border-radius: 28px 28px 28px 80px;   /* one corner softly scooped, like a leaf */
     overflow: hidden;
 }
 
@@ -271,48 +381,57 @@ ul {
     align-items: center;
     justify-content: center;
 
-    background: linear-gradient(135deg, #164e63, #1e293b);
+    background:
+        radial-gradient(circle at 30% 30%, rgba(216, 197, 143, 0.18), transparent 55%),
+        linear-gradient(135deg, #2d4339, var(--stone-soft));
 }
 
 .project-image span {
+    font-family: var(--font-display);
+    font-style: italic;
     font-size: 20px;
-    color: #bae6fd;
+    color: var(--moss-light);
 }
 
 .project-content {
     flex: 1;
-    padding: 45px;
+    padding: 48px;
 }
 
 .project-category {
-    color: #38bdf8;
-    font-size: 11px;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
+    color: var(--moss);
+    font-size: 14px;
+    margin-bottom: 14px;
 }
 
 .project-content h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
     font-size: 30px;
-    margin-bottom: 15px;
+    line-height: 1.25;
+    margin-bottom: 14px;
 }
 
 .project-content > p:not(.project-category) {
-    color: #aab5c5;
-    margin-bottom: 25px;
+    color: var(--muted);
+    margin-bottom: 26px;
 }
 
 .text-link {
-    color: #38bdf8;
-    font-weight: bold;
+    color: var(--moss);
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+    transition: color 0.4s var(--ease), border-color 0.4s var(--ease);
 }
 
 .text-link:hover {
-    color: #7dd3fc;
+    color: var(--moss-light);
+    border-bottom-color: var(--moss-light);
 }
 
 .all-projects {
     text-align: center;
-    margin-top: 35px;
+    margin-top: 38px;
 }
 
 
@@ -321,43 +440,65 @@ ul {
 ========================= */
 
 .services-section {
-    border-top: 1px solid #1e293b;
+    border-top: 1px solid var(--line);
 }
 
 .services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+    gap: 28px;
+    align-items: start;
 }
 
+/* Each card sits a little differently, like notes pinned by hand */
 .service-card {
-    padding: 35px;
-    background-color: #111c30;
-    border: 1px solid #263449;
-    border-radius: 8px;
-    transition: 0.3s;
+    padding: 36px;
+    background-color: var(--stone);
+    border: 1px solid var(--line);
+    border-radius: 22px 30px 24px 34px;
+    transition: transform 0.5s var(--ease),
+                border-color 0.5s var(--ease),
+                background-color 0.5s var(--ease);
+}
+
+.service-card:nth-child(3n + 1) {
+    transform: rotate(-0.6deg);
+}
+
+.service-card:nth-child(3n + 2) {
+    transform: translateY(14px) rotate(0.4deg);
+    border-radius: 30px 22px 34px 24px;
+}
+
+.service-card:nth-child(3n) {
+    transform: rotate(0.7deg);
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
-    border-color: #38bdf8;
+    transform: translateY(-4px) rotate(0deg);
+    border-color: var(--moss);
+    background-color: var(--stone-soft);
 }
 
 .service-number {
     display: block;
-    color: #38bdf8;
-    font-size: 14px;
-    margin-bottom: 25px;
+    color: var(--glow);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 18px;
+    margin-bottom: 22px;
 }
 
 .service-card h3 {
-    font-size: 20px;
-    margin-bottom: 15px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    margin-bottom: 12px;
 }
 
 .service-card p {
-    color: #aab5c5;
-    font-size: 14px;
+    color: var(--muted);
+    font-size: 15px;
 }
 
 
@@ -366,23 +507,28 @@ ul {
 ========================= */
 
 .contact-section {
-    padding: 100px 30px;
+    padding: 110px 30px;
     text-align: center;
 
-    background: #111c30;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(169, 197, 154, 0.12), transparent 60%),
+        var(--stone);
+    border-radius: 60px 60px 0 0;
 }
 
 .contact-section h2 {
     max-width: 650px;
     margin: auto;
+    font-family: var(--font-display);
+    font-weight: 500;
     font-size: 42px;
-    line-height: 1.2;
+    line-height: 1.25;
 }
 
 .contact-section > p:not(.eyebrow) {
     max-width: 500px;
-    margin: 20px auto 30px;
-    color: #aab5c5;
+    margin: 22px auto 32px;
+    color: var(--muted);
 }
 
 
@@ -391,13 +537,14 @@ ul {
 ========================= */
 
 .footer {
-    border-top: 1px solid #263449;
+    background-color: var(--stone);
+    border-top: 1px solid var(--line);
 }
 
 .footer-content {
     max-width: 1200px;
     margin: auto;
-    padding: 30px;
+    padding: 32px 30px;
 
     display: flex;
     align-items: center;
@@ -406,13 +553,13 @@ ul {
 }
 
 .footer-brand p {
-    color: #aab5c5;
-    font-size: 12px;
+    color: var(--muted);
+    font-size: 14px;
 }
 
 .copyright {
-    color: #64748b;
-    font-size: 12px;
+    color: var(--faint);
+    font-size: 13px;
 }
 
 
@@ -423,7 +570,7 @@ ul {
 @media (max-width: 850px) {
 
     .nav-links {
-        gap: 15px;
+        gap: 16px;
     }
 
     .hero {
@@ -432,6 +579,11 @@ ul {
 
     .services-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* keep the hand-placed look simple when the grid reflows */
+    .service-card:nth-child(3n + 2) {
+        transform: rotate(0.4deg);
     }
 
 }
@@ -466,6 +618,7 @@ ul {
 
     .project-card {
         flex-direction: column;
+        border-radius: 24px 24px 24px 56px;
     }
 
     .project-content {
@@ -476,8 +629,16 @@ ul {
         grid-template-columns: 1fr;
     }
 
+    .service-card:nth-child(n) {
+        transform: none;
+    }
+
     .section-heading h2 {
         font-size: 29px;
+    }
+
+    .contact-section {
+        border-radius: 36px 36px 0 0;
     }
 
     .contact-section h2 {
@@ -487,6 +648,27 @@ ul {
     .footer-content {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+}
+
+
+/* =========================
+   RESPECT CALM PREFERENCES
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .visual-card {
+        animation: none;
+    }
+
+    * {
+        transition-duration: 0.01ms !important;
     }
 
 }
